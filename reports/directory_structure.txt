@@ -1,0 +1,26 @@
+total 224
+drwxr-xr-x  25 tara  staff    800 Oct 15 13:33 .
+drwxr-xr-x@  8 tara  staff    256 Oct 15 13:04 ..
+drwxr-xr-x  12 tara  staff    384 Oct 15 13:34 .git
+drwxr-xr-x   4 tara  staff    128 Oct 15 13:04 .github
+-rw-r--r--   1 tara  staff      8 Oct 15 13:04 .gitignore
+drwxr-xr-x   6 tara  staff    192 Oct 15 13:22 .venv
+-rw-r--r--   1 tara  staff  14662 Oct 15 13:04 GRADING_SPEC.md
+-rw-r--r--   1 tara  staff  12595 Oct 15 13:04 README.md
+drwxr-xr-x   3 tara  staff     96 Oct 15 13:04 __pycache__
+drwxr-xr-x   3 tara  staff     96 Oct 15 13:44 data
+-rwxr-xr-x   1 tara  staff  13266 Oct 15 13:55 generate_data.py
+drwxr-xr-x   2 tara  staff     64 Oct 15 13:16 output
+drwxr-xr-x   8 tara  staff    256 Oct 15 13:47 python3env
+drwxr-xr-x   6 tara  staff    192 Oct 15 13:23 pythonvenv
+-rwxr-xr-x   1 tara  staff    623 Oct 15 13:54 q1_setup_project.sh
+-rw-r--r--   1 tara  staff     58 Oct 15 13:04 q2_config.txt
+-rwxr-xr-x   1 tara  staff   2901 Oct 15 13:04 q2_process_metadata.py
+-rw-r--r--   1 tara  staff   5849 Oct 15 13:04 q3_data_utils.py
+-rw-r--r--   1 tara  staff   7309 Oct 15 13:04 q4_exploration.ipynb
+-rw-r--r--   1 tara  staff   4824 Oct 15 13:04 q5_missing_data.ipynb
+-rw-r--r--   1 tara  staff   6194 Oct 15 13:04 q6_transformation.ipynb
+-rw-r--r--   1 tara  staff   4995 Oct 15 13:04 q7_aggregation.ipynb
+-rwxr-xr-x   1 tara  staff    908 Oct 15 13:04 q8_run_pipeline.sh
+drwxr-xr-x   3 tara  staff     96 Oct 15 13:23 reports
+-rw-r--r--   1 tara  staff     91 Oct 15 13:04 requirements.txt

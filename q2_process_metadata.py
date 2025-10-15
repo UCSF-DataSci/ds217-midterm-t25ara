@@ -1,4 +1,4 @@
-# TODO: Add shebang line: #!/usr/bin/env python3
+#!/usr/bin/env python3
 # Assignment 5, Question 2: Python Data Processing
 # Process configuration files for data generation.
 
@@ -19,8 +19,17 @@ def parse_config(filepath: str) -> dict:
         '100'
     """
     # TODO: Read file, split on '=', create dict
-    pass
-
+    config = {}
+    with open(filepath,'r') as file:
+        for line in file:
+            line = line.strip()
+            if not line or line.startswith('#'):
+                continue
+            if '=' in line:
+                
+                
+pass
+        
 
 def validate_config(config: dict) -> dict:
     """

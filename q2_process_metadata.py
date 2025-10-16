@@ -65,8 +65,6 @@ def validate_config(config: dict) -> dict:
 
         
 
-
-
 def generate_sample_data(filename: str, config: dict) -> None:
     """
     Generate a file with random numbers for testing, one number per row with no header.

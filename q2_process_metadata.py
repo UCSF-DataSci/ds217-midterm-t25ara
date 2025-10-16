@@ -19,17 +19,17 @@ def parse_config(filepath: str) -> dict:
         '100'
     """
     # TODO: Read file, split on '=', create dict
-    config = {}
+    config = {} #making empty dictionary 
     with open(filepath,'r') as file:
         for line in file:
             line = line.strip()
-            if not line or line.startswith('#'):
-                continue
-            if '=' in line:
+            key, value = line.split('=', 1) #splitting on first =
+            value = int(value) #converting string to integer 
+            config[key] = value #adding key and value to dictionary 
+    print(config)
+            
                 
-                
-pass
-        
+                 
 
 def validate_config(config: dict) -> dict:
     """
@@ -53,7 +53,18 @@ def validate_config(config: dict) -> dict:
         True
     """
     # TODO: Implement with if/elif/else
-    pass
+    rule1 = config['sample_data_rows']
+    rule2 = config['sample_data_min']
+    rule3 = config['sample_data_max']
+    if isinstance(rule1,int) and rule1 > 0:
+        if isinstance(rule2,int) and rule2 >= 1:
+            if isinstance(rule3,int) and rule3 > rule2:
+                print('True')
+            else:
+                print('False')
+
+        
+
 
 
 def generate_sample_data(filename: str, config: dict) -> None:

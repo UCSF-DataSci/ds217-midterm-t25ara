@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # Assignment 5, Question 2: Python Data Processing
 # Process configuration files for data generation.
-
-
+import pandas as pd
+import random
 def parse_config(filepath: str) -> dict:
     """
     Parse config file (key=value format) into dictionary.
@@ -26,7 +26,7 @@ def parse_config(filepath: str) -> dict:
             key, value = line.split('=', 1) #splitting on first =
             value = int(value) #converting string to integer 
             config[key] = value #adding key and value to dictionary 
-    print(config)
+    return(config)
             
                 
                  
@@ -53,17 +53,42 @@ def validate_config(config: dict) -> dict:
         True
     """
     # TODO: Implement with if/elif/else
-    rule1 = config['sample_data_rows']
-    rule2 = config['sample_data_min']
-    rule3 = config['sample_data_max']
-    if isinstance(rule1,int) and rule1 > 0:
-        if isinstance(rule2,int) and rule2 >= 1:
-            if isinstance(rule3,int) and rule3 > rule2:
-                print('True')
-            else:
-                print('False')
+    results = {
+        'sample_data_rows': False,
+        'sample_data_min': False,
+        'sample_data_max': False
+    }
 
-        
+    try:
+        rows = int(config['sample_data_rows'])
+        min_val = int(config['sample_data_min'])
+        max_val = int(config['sample_data_max'])
+    except (ValueError, TypeError, KeyError):
+        # If conversion or missing key error occurs, return defaults
+        return results
+
+    # Check sample_data_rows
+    if isinstance(rows, int) and rows > 0:
+        results['sample_data_rows'] = True
+    else:
+        results['sample_data_rows'] = False
+
+    # Check sample_data_min
+    if isinstance(min_val, int) and min_val >= 1:
+        results['sample_data_min'] = True
+    else:
+        results['sample_data_min'] = False
+
+    # Check sample_data_max
+    if isinstance(max_val, int):
+        if max_val > min_val:
+            results['sample_data_max'] = True
+        else:
+            results['sample_data_max'] = False
+    else:
+        results['sample_data_max'] = False
+
+    return results
 
 def generate_sample_data(filename: str, config: dict) -> None:
     """
@@ -87,8 +112,15 @@ def generate_sample_data(filename: str, config: dict) -> None:
     # TODO: Parse config values (convert strings to int)
     # TODO: Generate random numbers and save to file
     # TODO: Use random module with config-specified range
-    pass
-
+    rows = int(config['sample_data_rows'])
+    min = int(config['sample_data_min'])
+    max = int(config['sample_data_max'])
+    import random
+    numbers = [random.randint(min,max) for _ in range(rows)]
+    with open(filename, 'w') as f:
+        for number in numbers:
+            f.write(f"{number}\n")
+    print(f"sample data generated with numbers between {min} and {max} with {rows} rows")
 
 def calculate_statistics(data: list) -> dict:
     """
@@ -106,7 +138,22 @@ def calculate_statistics(data: list) -> dict:
         30.0
     """
     # TODO: Calculate stats
-    pass
+    n = len(data)
+    sortdata = sorted(data)
+    if n % 2 == 0:
+        # even number of elements 
+        median = (sortdata[n//2 - 1] + sortdata[n//2]) / 2
+    else:
+        # odd number of element
+        median = sortdata[n//2]
+
+    results = {}
+    results['mean'] = sum(data)/len(data)
+    results['median'] = median
+    results['sum'] = sum(data)
+    results['count'] = len(data)
+    return results
+
 
 
 if __name__ == '__main__':
@@ -117,5 +164,13 @@ if __name__ == '__main__':
     # generate_sample_data('data/sample_data.csv', config)
     # 
     # TODO: Read the generated file and calculate statistics
+    config = parse_config('q2_config.txt')
+    validation = validate_config(config)
+    generate_sample_data('data/sample_data.csv',config)
+    with open('data/sample_data.csv', 'r') as file:
+        data = [int(line.strip()) for line in file]
+    stats = calculate_statistics(data)
     # TODO: Save statistics to output/statistics.txt
-    pass
+    with open('output/statistics.txt', 'w') as file:
+        for key, value in stats.items():
+            file.write(f"{key}: {value}\n") 

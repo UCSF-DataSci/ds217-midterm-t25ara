@@ -190,7 +190,27 @@ def transform_types(df: pd.DataFrame, type_map: dict) -> pd.DataFrame:
         ... }
         >>> df_typed = transform_types(df, type_map)
     """
-    pass
+    tdf = df.copy()
+    for col, type, in type_map.items():
+     if col in tdf.columns: #if the column in the type map is in the data frame
+        print(f"{col} is present in the data frame")
+        if type == 'datetime':
+            tdf[col] = pd.to_datetime(tdf[col],errors='coerce')
+            print(f"{col} was converted to datetime")
+        elif type == 'numeric':
+            tdf[col] = pd.to_numeric(tdf[col], errors = 'coerce')
+            print(f"{col} was converted to numeric")
+        elif type == 'category':
+            tdf[col] = tdf[col].astype('category')
+            print(f"{col} was converted to category")
+        elif type == 'string':
+            tdf[col] = tdf[col].astype('string')
+            print(f"{col} was converted to string")
+        else: 
+            print("supported types are 'datetime', 'numeric', 'category', 'string'")
+    
+    return tdf
+
 
 
 def create_bins(df: pd.DataFrame, column: str, bins: list,
@@ -216,7 +236,11 @@ def create_bins(df: pd.DataFrame, column: str, bins: list,
         ...     labels=['<18', '18-34', '35-49', '50-64', '65+']
         ... )
     """
-    pass
+    bdf = df.copy()
+    if new_column is None:
+        new_column = f"{column}_binned"
+    bdf[new_column]= (pd.cut(bdf[column],bins = bins,labels = labels, include_lowest = True))
+    return bdf
 
 
 def summarize_by_group(df: pd.DataFrame, group_col: str,

@@ -23,7 +23,8 @@ def load_data(filepath: str) -> pd.DataFrame:
         >>> df.shape
         (10000, 18)
     """
-    pass
+    file = pd.read_csv(filepath)
+    return file
 
 
 def clean_data(df: pd.DataFrame, remove_duplicates: bool = True,
@@ -42,7 +43,23 @@ def clean_data(df: pd.DataFrame, remove_duplicates: bool = True,
     Example:
         >>> df_clean = clean_data(df, sentinel_value=-999)
     """
-    pass
+    if remove_duplicates == True:
+        print("duplicate rows:")
+        print(df.duplicated().sum())
+        print(df.shape)
+        clean_df = df.drop_duplicates()
+        print("dropping the duplicates")
+        print(clean_df.shape)
+    else:
+        print("keeping duplicates")
+    
+    if isinstance(sentinel_value, float) == True:
+        clean_df.replace(sentinel_value,'NaN')
+    print("data cleaned!")
+    return clean_df 
+
+    
+
 
 
 def detect_missing(df: pd.DataFrame) -> pd.Series:
@@ -60,7 +77,9 @@ def detect_missing(df: pd.DataFrame) -> pd.Series:
         >>> missing['age']
         15
     """
-    pass
+    missing_val = df.isnull().sum()
+    print(f"there are {missing_val} per a column ")
+    return missing_val
 
 
 def fill_missing(df: pd.DataFrame, column: str, strategy: str = 'mean') -> pd.DataFrame:
@@ -78,7 +97,23 @@ def fill_missing(df: pd.DataFrame, column: str, strategy: str = 'mean') -> pd.Da
     Example:
         >>> df_filled = fill_missing(df, 'age', strategy='median')
     """
-    pass
+    df_fill = df.copy()
+    if column not in df.columns:
+        raise ValueError(f"Column '{column}' not found in DataFrame.")
+    if df[column].isnull().any():
+        if strategy == 'mean':
+            df_fill[column] = df[column].fillna(df[column].mean())
+        elif strategy == 'median':
+            df_fill[column] = df[column].fillna(df[column].median())
+        elif strategy == 'ffill':
+            df_fill[column] = df[column].ffill()
+        else:
+            raise ValueError("Strategy must be one of: 'mean', 'median', or 'ffill'.")
+        print(f"changed missing values in {column} to {strategy} of column")
+    else:
+        print(f"No missing values found in '{column}'.")
+    return df_fill
+
 
 
 def filter_data(df: pd.DataFrame, filters: list) -> pd.DataFrame:
@@ -111,7 +146,28 @@ def filter_data(df: pd.DataFrame, filters: list) -> pd.DataFrame:
         >>> filters = [{'column': 'age', 'condition': 'in_range', 'value': [18, 65]}]
         >>> df_filtered = filter_data(df, filters)
     """
-    pass
+    fdf = df.copy()
+    for filter in filters: 
+        column_name = filter['column']
+        value = filter['value']
+        condition = filter['condition']
+        if condition == 'equals':
+            fdf = fdf[fdf[column_name] == value]
+        elif condition == 'greater_than':
+            fdf = fdf[fdf[column_name] > value]
+
+        elif condition == 'less_than': 
+            fdf = fdf[fdf[column_name] < value]
+        
+        elif condition == 'in_range': 
+            val1 = value[0]
+            val2 = value[1]
+            fdf = fdf[(fdf[column_name] > val1) & (fdf[column_name] < val2)] 
+        elif condition == 'in_list':
+            fdf = fdf[fdf[column_name].isin(value)]
+
+    return fdf
+    
 
 
 def transform_types(df: pd.DataFrame, type_map: dict) -> pd.DataFrame:

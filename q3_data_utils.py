@@ -268,7 +268,12 @@ def summarize_by_group(df: pd.DataFrame, group_col: str,
         ...     {'age': ['mean', 'std'], 'bmi': 'mean'}
         ... )
     """
-    pass
+    sdf = df.copy()
+    if agg_dict is None:
+        result = sdf.groupby(group_col).describe()
+    else:
+        result = sdf.groupby(group_col).agg(agg_dict)
+    return result
 
 
 

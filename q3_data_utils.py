@@ -296,3 +296,61 @@ if __name__ == '__main__':
     # test_df = pd.DataFrame({'age': [25, 30, 35], 'bmi': [22, 25, 28]})
     # print("Test DataFrame created:", test_df.shape)
     # print("Test detect_missing:", detect_missing(test_df))
+    test_df = pd.DataFrame({
+        'site': ['A', 'A', 'B', 'B', 'C', 'C'],
+        'age': [25, 30, np.nan, 40, 45, 45],
+        'bmi': [22.5, np.nan, 27.3, 26.1, 23.5, -999],
+        'enrollment_date': [
+            '2024-01-01', '2024-01-05',
+            '2024-02-10', '2024-03-01',
+            '2024-03-15', '2024-03-15'
+        ]
+    })
+
+    print("\n--- Test DataFrame created ---")
+    print(test_df)
+
+
+    print("\n--- Testing clean_data() ---")
+    df_clean = clean_data(test_df, sentinel_value=-999)
+    print(df_clean)
+
+
+    print("\n--- Testing detect_missing() ---")
+    missing = detect_missing(df_clean)
+    print(missing)
+
+
+    print("\n--- Testing fill_missing() on 'age' ---")
+    df_filled = fill_missing(df_clean, 'age', strategy='mean')
+    print(df_filled)
+
+
+    print("\n--- Testing filter_data() ---")
+    filters = [
+        {'column': 'age', 'condition': 'greater_than', 'value': 25},
+        {'column': 'bmi', 'condition': 'less_than', 'value': 28}
+    ]
+    df_filtered = filter_data(df_filled, filters)
+    print(df_filtered)
+
+
+    print("\n--- Testing transform_types() ---")
+    type_map = {'enrollment_date': 'datetime', 'site': 'category'}
+    df_typed = transform_types(df_clean, type_map)
+    print(df_typed.dtypes)
+
+
+    print("\n--- Testing create_bins() ---")
+    df_binned = create_bins(df_filled, column='age',
+                            bins=[0, 30, 40, 50],
+                            labels=['<30', '30–39', '40–49'])
+    print(df_binned[['age', 'age_binned']])
+
+
+    print("\n--- Testing summarize_by_group() ---")
+    agg_dict = {'age': ['mean', 'std'], 'bmi': 'mean'}
+    summary = summarize_by_group(df_filled, 'site', agg_dict)
+    print(summary)
+
+    print("\nAll data utility tests completed successfully!")

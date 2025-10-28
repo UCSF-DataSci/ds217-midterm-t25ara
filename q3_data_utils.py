@@ -78,7 +78,6 @@ def detect_missing(df: pd.DataFrame) -> pd.Series:
         15
     """
     missing_val = df.isnull().sum()
-    print(f"there are {missing_val} per a column ")
     return missing_val
 
 

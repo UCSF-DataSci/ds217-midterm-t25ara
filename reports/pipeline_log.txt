@@ -1,0 +1,7 @@
+Starting clinical trial data pipeline...
+Pipeline complete!
+q4 ran sucessfully!
+q5 ran sucessfully!
+q6 ran sucessfully!
+q7 ran sucessfully!
+Pipeline Finished!
